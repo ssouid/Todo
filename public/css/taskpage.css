@@ -1,0 +1,37 @@
+#priority-Low{
+   
+    background-color: #81da9b;
+    color: #2b7b38;
+    
+}
+#priority-Medium{
+   
+    background-color: #FBDF72;
+    color: #a27604;
+    
+}
+#priority-High{
+   
+    background-color: #F6A899;
+    color: #c7310c;
+    
+}
+#status-Not_Started{
+
+    background-color: #B1F5F0;
+    color: #4b8387;
+    
+}
+#status-In_Progress{
+
+    background-color: #F8BD6D;
+    color: #977342;
+    
+}
+#status-Completed{
+
+    background-color: #98E1AD;
+    color: #2C7F3A;
+    
+}
+
