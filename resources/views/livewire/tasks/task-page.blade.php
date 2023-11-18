@@ -31,7 +31,7 @@
                             </svg>
                             Add new Task
                         </button>
-                     
+
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -41,7 +41,6 @@
 
 
                                 <th scope="col" class="px-4 py-3">Task</th>
-                                <th scope="col" class="px-4 py-3">Created by</th>
                                 <th scope="col" class="px-4 py-3">Assigned To</th>
                                 <th scope="col" class="px-4 py-3">status</th>
                                 <th scope="col" class="px-4 py-3">Priority</th>
@@ -52,7 +51,7 @@
                         </thead>
                         <tbody>
                             @forelse ($tasks as $task)
-                                <tr wire:loading.class="opacity-50" 
+                                <tr wire:loading.class="opacity-50"
                                     class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
 
                                     <td scope="row"
@@ -60,19 +59,26 @@
                                         {{ $task->title }}
                                     </td>
                                     <td class="px-4 py-2">
-                                        <span 
-                                            class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                                             </span>
+                                        <div class="avatar-group">
+
+                                            <div class="flex -space-x-2 overflow-hidden">
+                                                @foreach ($task->users as $user)
+                                                    <img class="inline-block h-9 w-9 rounded-full ring-2 ring-white"
+                                                        src="{{ getAvatar($user->avatar, $user->email) }}"
+                                                        alt="">
+                                                @endforeach
+                                            </div>
+                                        </div>
 
                                     </td>
                                     <td class="px-4 py-2">
-                                        <span id="status-{{$task->status}}"
+                                        <span id="status-{{ $task->status }}"
                                             class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                                             {{ $task->status }} </span>
 
                                     </td>
                                     <td class="px-4 py-2">
-                                        <span id="priority-{{$task->priority}}"
+                                        <span id="priority-{{ $task->priority }}"
                                             class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                                             {{ $task->priority }} </span>
 
@@ -81,7 +87,15 @@
                                         {{ $task->due_date }}
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <button wire:click="edit()" type="button" data-modal-toggle="defaultModal"
+                                        <button wire:click="showTask({{ $task->id }})" type="button"
+                                            data-modal-toggle="showTaskModal"
+                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center
+                                            text-white rounded-lg bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-green-200 dark:bg-green-500 dark:hover:bg-green-700 dark:focus:ring-green-800">
+
+                                            View
+                                        </button>
+                                        <button wire:click="showTask({{ $task->id }})" type="button"
+                                            data-modal-toggle="editModal"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -92,7 +106,7 @@
                                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                                                     clip-rule="evenodd"></path>
                                             </svg>
-                                            Edit
+
                                         </button>
                                         <button type="button" data-modal-toggle="deleteModal"
                                             wire:click="setdeleteid()"
@@ -103,7 +117,7 @@
                                                     d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                     clip-rule="evenodd"></path>
                                             </svg>
-                                            Delete
+
                                         </button>
                                     </td>
 
@@ -129,4 +143,9 @@
         </div>
     </section>
     @include('livewire.tasks.modals.add-task-modal')
+    @include('livewire.tasks.modals.edit-task-modal')
+    @include('livewire.tasks.modals.show-task')
+
+    @push('scripts')
+    @endpush
 </div>

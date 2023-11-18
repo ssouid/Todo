@@ -1,8 +1,10 @@
 <?php
 
+use App\Livewire\CategoryPage;
 use App\Livewire\HomePage;
 use App\Livewire\TaskPage;
 use App\Livewire\UsersPage;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/users', UsersPage::class)->name('users');
         Route::get('/tasks', TaskPage::class)->name('tasks');
+        Route::get('/categories', CategoryPage::class)->name('categories');
     });
 });
 

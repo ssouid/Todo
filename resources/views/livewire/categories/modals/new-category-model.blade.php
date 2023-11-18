@@ -1,5 +1,5 @@
 <!-- Main modal -->
-<div wire:ignore.self id="defaultModal" tabindex="-1" aria-hidden="true"
+<div wire:ignore.self id="NewCategorytModal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
@@ -7,12 +7,12 @@
             <!-- Modal header -->
             <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Add New User
+                    Add New Category
                 </h3>
                 <button type="button"
                 class="close"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-toggle="defaultModal">
+                    data-modal-toggle="NewCategorytModal">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -26,63 +26,27 @@
             <form >
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
-                        <label for="username"
+                        <label for="name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input type="text" value="" wire:model="username" name="username"
+                        <input type="text" value="" wire:model="name" name="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        @error('username')
+                        @error('name')
                             <span class="error"> {{ $message }} </span>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="email"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="email" wire:model="email" name="email" id="email"
+                        <label for="position"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Position</label>
+                        <input type="number" wire:model="position" name="position" id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        @error('email')
+                        @error('position')
                             <span class="error"> {{ $message }} </span>
                         @enderror
-                    </div>
-                    <div>
-                        <label for="password"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" wire:model="password" name="password" id="password"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        @error('password')
-                            <span class="error"> {{ $message }} </span>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="user_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
-                            Type</label>
-                        <select id="user_type" wire:model="user_type"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected >...</option>
-                            <option>user</option>
-                            <option>admin</option>
-                        </select>
-                        @error('user_type')
-                            <span class="error"> {{ $message }} </span>
-                        @enderror
-                    </div>
-                    <div class="sm:col-span-2">
-
-                        <label class="block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white"
-                            for="file_input">Upload Avatar</label>
-                        <input wire:model="avatar"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" id="avatar" type="file">
-                        <p class="mt-1 ml-2 text-sm text-gray-500 dark:text-gray-300" id="avatar_help">SVG, PNG, JPG or
-                            GIF (MAX. 800x400px).</p>
-                        @error('avatar')
-                            <span class="error"> {{ $message }} </span>
-                        @enderror
-
                     </div>
                 </div>
         
-                    <button wire:click="save" type="button" data-modal-hide="defaultModal"
+                    <button wire:click="save" type="button" data-modal-hide="NewCategorytModal"
                         class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                         <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +54,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        Add new User
+                        Add new Category
                     </button>
                
 

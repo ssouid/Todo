@@ -25,11 +25,11 @@ class Task extends Model
 
     public function createdby(){
 
-        return $this-> belongsTo(User::class,'created_by')->withTimestamps(); 
+        return $this-> belongsTo(User::class,'created_by'); 
     }
 
     public function categories(){
 
-        return $this-> belongsToMany(Category::class)->withTimestamps(); 
+        return $this-> belongsToMany(Category::class); 
     }
 }

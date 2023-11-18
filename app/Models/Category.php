@@ -16,7 +16,7 @@ class Category extends Model
 
     public function tasks()  {
 
-        return $this-> belongsToMany(Task::class)->withTimestamps(); ;
+        return $this-> belongsToMany(Task::class) ;
         
     }
 }

@@ -10,6 +10,8 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Carbon\Carbon;
+
 
 #[Layout('layout.app')]
 class UsersPage extends Component
@@ -20,43 +22,11 @@ class UsersPage extends Component
 
 
 
-    public $username, $email, $password, $user_type, $avatar;
-    public $user_id;
-    public $user;
-    public $editform = false;
-    public $modal_title = 'Create New User';
+    public $user, $user_id, $username, $email, $password, $user_type, $avatar,$created_at;
+    public $taskCount, $contributeCount, $completedCount;
+
     public $search = '';
 
-
-    public function save()
-    {
-        $data = $this->validate([
-
-            'username' => 'required|string|min:2|max:100',
-            'password' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'user_type' => 'required|in:user,admin',
-            'avatar' =>  'nullable',
-        ]);
-
-     
-        $user =user::create($data);
-
-      
-
-        $this->resetInput();
-        //todo fix close model not working
-        $this->dispatch('close-modal');
-        flash('The user added successfully', 'success');
-    }
-    public function resetInput()
-    {
-        $this->username = '';
-        $this->password = '';
-        $this->email = '';
-        $this->user_type = '';
-        $this->avatar = '';
-    }
 
 
     public function render()
@@ -68,63 +38,82 @@ class UsersPage extends Component
         );
     }
 
-    //todo trying to do create/update with the modal 
-    public function edit($id)
+    protected  $rules= [
+        'username' => 'required|string|min:2|max:100',
+        'password' => 'nullable',
+        'email' => 'required|email|unique:users,email,',
+        'user_type' => 'required|in:user,admin',
+       // 'avatar'=> 'nullable',
+    ];
+
+
+    public function save()
     {
-        $this->editform = true;
-        $this->modal_title = 'Edit User';
-        $this->user = user::findorfail($id);
+        $data = $this->validate($this->rules);
+           
+        if(isset($this->avatar ))
+        {$data['avatar'] = $this->avatar->store('/', 'avatars');}
+        else 
+        {unset($data['avatar']);}
+          
+        
+         dd($data);
+        $user = user::create($data);
 
+        $this->resetInput();
 
-        $this->username =  $this->user->username;
-         //$this->password =  $this->user->password;
-        $this->email =  $this->user->email;
-        $this->user_type =  $this->user->user_type;
-        // $this->avatar =  $this->user->avatar;
+        flash('The user added successfully', 'success');
+    }
 
+    public function resetInput()
+    {
+        $this->username = '';
+        $this->password = '';
+        $this->email = '';
+        $this->user_type = '';
+        $this->avatar = '';
+        $this->user_id = '';
+    }
+
+    public function showUser($id)
+    {
+        $user = user::findorfail($id);
+        $this->user_id = $id;
+        $this->username   =  $user->username;
+       // $this->password   =  $user->password;
+        $this->email      =  $user->email;
+        $this->user_type  =  $user->user_type;
+        $this->avatar     =  $user->avatar;
+        $this->created_at = $user->created_at->diffForHumans();
+
+        $this->contributeCount = count($user->tasks);
+        $this->taskCount = count($user->createdTask);
+        $this->completedCount = count($user->createdTask->where('status', '=', 'Completed'));
+      
     }
 
     public function update()
     {
+        //todo find a way to unset password and avatar if its null
 
+    
         $data = $this->validate([
+
             'username' => 'required|string|min:2|max:100',
             'password' => 'nullable',
-            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($this->user->id)],
+            'email' => 'required|email|unique:users,email,'.$this->user_id,
             'user_type' => 'required|in:user,admin',
-            'avatar' =>  'nullable',
+    
         ]);
 
-        if (!data_get($data, 'password')) {
-            unset($data['password']);
-        }
-        
-        if (data_get($data, 'avatar')) {
-            $filename = $this->avatar->store('/', 'avatars');
-        }else{
-            unset($data['avatar']);
-            $filename='';
+       if (!isset($data['password']) ){unset($data['password']);} 
+       dd($data);
+        $user = user::findorfail($this->user_id);
 
-        } 
-
-         
-        $user = user::findorfail($this->user->id);
-
-           //todo find a way to unset password if its null
-
-        $user->update([
-
-            'username' =>  $this->username,
-            'password' => $this->password,
-            'email' =>  $this->email,
-            'user_type' =>  $this->user_type,
-            'avatar' =>  $filename,
-
-        ]);
+        $user->update($data);
 
         $this->resetInput();
-        //todo fix close model not working
-        $this->dispatch('close-modal');
+
         flash('The user updated successfully', 'success');
     }
 
@@ -140,7 +129,5 @@ class UsersPage extends Component
             $user->delete();
         }
         flash('The user deleted successfully', 'success');
-
-        $this->dispatch('close-modal');
     }
 }

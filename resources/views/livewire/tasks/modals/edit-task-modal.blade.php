@@ -1,5 +1,5 @@
 <!-- Main modal -->
-<div wire:ignore.self id="AddTaskModal" tabindex="-1" aria-hidden="true"
+<div wire:ignore.self id="editModal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
@@ -11,7 +11,7 @@
                 </h3>
                 <button type="button" class="close"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-toggle="AddTaskModal">
+                    data-modal-toggle="editModal">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -40,33 +40,33 @@
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea wire:model="description" id="description" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300
-                             focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Write task description here..."></textarea>
                         @error('description')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
                                 </span></p>
                         @enderror
                     </div>
-                    <div style="grid-column: 1/-1;">
-                        <label for="selectedUsers"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assgin to</label>
-
-                        <select multiple wire:model="selectedUsers" class="selectpicker w-100 ">
-                            <option value="">...</option>
+            
+                    <div>
+                        <label for="user_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assgined
+                            User</label>
+                        <select  id="user_id" wire:model="user_id"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected value="">...</option>
                             @foreach ($userslist as $user)
-                                @if ($user->id != userId())
-                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
-                                @endif
+                                <option value="{{ $user->id }}">{{ $user->username }}</option>
                             @endforeach
                         </select>
-
-                        @error('selectedUsers')
+                        @error('user_id')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
                                 </span></p>
                         @enderror
                     </div>
+
+
+
                     <div>
                         <label for="priority"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority</label>
@@ -95,21 +95,6 @@
                         @error('priority')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error">
                                     {{ $message }}
-                                </span></p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="category"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                        <select id="category" wire:model="category"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected value="">...</option>
-                            @foreach ($categorieslist as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('priority')
-                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
                                 </span></p>
                         @enderror
                     </div>
@@ -153,7 +138,15 @@
             </form>
         </div>
     </div>
-
-
-
 </div>
+
+
+
+@push('script')
+    <script>
+        window.addEventListener('close-modal', event => {
+            $('#AddTaskModal').modal('hide');
+            $('#exampleModal').modal('hide');
+        })
+    </script>
+@endpush

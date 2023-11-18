@@ -38,7 +38,10 @@ class User extends Authenticatable
         return $this-> belongsToMany(Task::class)->withTimestamps(); ;
     }
 
+    public function createdTask(){
 
+        return $this-> hasMany(Task::class,'created_by'); 
+    }
 
     /**
      * The attributes that should be cast.

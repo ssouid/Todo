@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "php-flasher/flasher-toastr-laravel": "^1.15",
+        "snapappointments/bootstrap-select": "^1.13",
         "wire-elements/modal": "^2.0"
     },
     "require-dev": {
