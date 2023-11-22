@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use App\Models\User;
 use Illuminate\Validation\Rule;
@@ -33,7 +33,7 @@ class UsersPage extends Component
     {
         sleep(0.9);
         return view(
-            'livewire.users.users-index',
+            'livewire.admin.users.users-index',
             ['users' => User::search('username', $this->search)->paginate(7)]
         );
     }
@@ -56,8 +56,6 @@ class UsersPage extends Component
         else 
         {unset($data['avatar']);}
           
-        
-         dd($data);
         $user = user::create($data);
 
         $this->resetInput();
@@ -75,7 +73,7 @@ class UsersPage extends Component
         $this->user_id = '';
     }
 
-    public function showUser($id)
+    public function showUser($id,$btn)
     {
         $user = user::findorfail($id);
         $this->user_id = $id;
@@ -83,7 +81,7 @@ class UsersPage extends Component
        // $this->password   =  $user->password;
         $this->email      =  $user->email;
         $this->user_type  =  $user->user_type;
-        $this->avatar     =  $user->avatar;
+       if($btn=='view') {$this->avatar =  $user->avatar;} 
         $this->created_at = $user->created_at->diffForHumans();
 
         $this->contributeCount = count($user->tasks);
@@ -106,8 +104,14 @@ class UsersPage extends Component
     
         ]);
 
-       if (!isset($data['password']) ){unset($data['password']);} 
-       dd($data);
+       if (!isset($this->password)){unset($data['password']);} 
+
+       if(isset($this->avatar ))
+       {$data['avatar'] = $this->avatar->store('/', 'avatars');}
+       else 
+       {unset($data['avatar']);}
+
+     
         $user = user::findorfail($this->user_id);
 
         $user->update($data);

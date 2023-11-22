@@ -87,14 +87,14 @@
                                         {{ $task->due_date }}
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <button wire:click="showTask({{ $task->id }})" type="button"
+                                        <button wire:click="showTask({{ $task->id }},'view')" type="button"
                                             data-modal-toggle="showTaskModal"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center
                                             text-white rounded-lg bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-green-200 dark:bg-green-500 dark:hover:bg-green-700 dark:focus:ring-green-800">
 
                                             View
                                         </button>
-                                        <button wire:click="showTask({{ $task->id }})" type="button"
+                                        <button wire:click="showTask({{ $task->id }},'edit')" type="button"
                                             data-modal-toggle="editModal"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
@@ -109,7 +109,7 @@
 
                                         </button>
                                         <button type="button" data-modal-toggle="deleteModal"
-                                            wire:click="setdeleteid()"
+                                            wire:click="setdeleteid({{ $task->id }})"
                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -142,9 +142,10 @@
             </div>
         </div>
     </section>
-    @include('livewire.tasks.modals.add-task-modal')
-    @include('livewire.tasks.modals.edit-task-modal')
-    @include('livewire.tasks.modals.show-task')
+    @include('livewire.admin.tasks.modals.add-task-modal')
+    @include('livewire.admin.tasks.modals.edit-task-modal')
+    @include('livewire.admin.tasks.modals.show-task')
+    @include('livewire.admin.tasks.modals.delete-task-modal')
 
     @push('scripts')
     @endpush

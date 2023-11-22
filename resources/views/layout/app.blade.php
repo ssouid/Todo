@@ -10,6 +10,7 @@
 <body class="antialiased">
 
     @includewhen(auth()->user()->user_type == 'admin', 'components.header2')
+    @includewhen(auth()->user()->user_type == 'user', 'components.header')
 
 
 

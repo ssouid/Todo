@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use App\Models\Category;
 use App\Models\Task ;
@@ -29,7 +29,7 @@ class CategoryPage extends Component
       
         sleep(0.9);
         return view(
-            'livewire.categories.category-index',
+            'livewire.admin.categories.category-index',
             [
                 'categories' =>  Category::search('name', $this->search) ->paginate(7)
             ]

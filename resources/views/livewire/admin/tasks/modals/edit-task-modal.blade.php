@@ -9,7 +9,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Add Task
                 </h3>
-                <button type="button" class="close"
+                <button type="button" class="close" wire:click="resetInput()"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-toggle="editModal">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -40,33 +40,33 @@
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea wire:model="description" id="description" rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300
+                             focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Write task description here..."></textarea>
                         @error('description')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
                                 </span></p>
                         @enderror
                     </div>
-            
-                    <div>
-                        <label for="user_id"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assgined
-                            User</label>
-                        <select  id="user_id" wire:model="user_id"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected value="">...</option>
+                    <div style="grid-column: 1/-1;">
+                        <label for="selectedUsers"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assgin to</label>
+
+                        <select multiple wire:model="selectedUsers" class="selectpicker w-100 ">
+                            <option value="">...</option>
                             @foreach ($userslist as $user)
-                                <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @if ($user->id != userId())
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @endif
                             @endforeach
                         </select>
-                        @error('user_id')
+
+                        @error('selectedUsers')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
                                 </span></p>
                         @enderror
                     </div>
-
-
-
                     <div>
                         <label for="priority"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority</label>
@@ -99,6 +99,21 @@
                         @enderror
                     </div>
                     <div>
+                        <label for="category"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                        <select multiple id="category" wire:model="cates"
+                            class=" selectpicker bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected value="">...</option>
+                            @foreach ($categorieslist as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="error"> {{ $message }}
+                                </span></p>
+                        @enderror
+                    </div>
+                    <div>
                         <label for="due_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Due Date</label>
                         <div datepicker datepicker-format="mm/dd/yyyy" class="relative max-w-sm">
@@ -121,7 +136,6 @@
                     </div>
 
                 </div>
-
                 <button wire:click="save()" type="button"
                     class=" mt-5 text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
                     data-modal-hide="AddTaskModal">

@@ -5,7 +5,7 @@
 
     <div class="w-full ">
         <div class="top-0  mb-8">
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All users</h1>
+            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">All Categories</h1>
         </div>
         <div class=" h-5 sm:flex">
             <div class="items-center  mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
@@ -22,10 +22,10 @@
                     class=" flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
                     <div class="flex float-right m-5">
 
-                        <button id="defaultModalButton" data-modal-toggle="defaultModal"
+                        <button id="defaultModalButton" data-modal-toggle="NewCategorytModal"
                             class=" block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                             type="button">
-                            New User
+                            New Category
                         </button>
                     </div>
                 </div>
@@ -42,15 +42,11 @@
 
                                     <th scope="col"
                                         class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                        full Name
+                                        Name
                                     </th>
                                     <th scope="col"
                                         class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                        Email
-                                    </th>
-                                    <th scope="col"
-                                        class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                        Role
+                                        Position
                                     </th>
                                     <th scope="col"
                                         class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
@@ -59,39 +55,22 @@
                                 </tr>
                             </thead>
                             <tbody class=" h-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                @forelse($users as $user)
+                                @forelse($categories as $category)
                           
                                     <tr wire:loading.class="opacity-50"
                                         class=" hover:bg-gray-100 dark:hover:bg-gray-700">
-                                        <td class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-                                            <img class="w-10 h-10 rounded-full" src="{{ $user->avatarUrl() }}"
-                                                alt="Neil Sims avatar">
-                                            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                <div class="text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ $user->username }}</div>
-
-                                            </div>
-                                        </td>
                                         <td
-                                            class="p-2 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $user->email }}</td>
+                                            class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $category->name }}</td>
                                         <td
-                                            class="p-2 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $user->user_type }}
+                                            class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $category->position }}
                                         </td>
 
                                         <td class="p-4 space-x-2 whitespace-nowrap">
 
-                                            <button wire:click="showUser({{ $user->id }})" type="button"
-                                                data-modal-toggle="profileModal"
-                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center
-                                                 text-white rounded-lg bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-green-200 dark:bg-green-500 dark:hover:bg-green-700 dark:focus:ring-green-800">
-
-                                                View
-                                            </button>
-
-                                            <button wire:click="showUser({{ $user->id }})" type="button"
-                                                data-modal-toggle="editUserModal"
+                                            <button wire:click="showCategory({{ $category->id }})" type="button"
+                                                data-modal-toggle="EditCategorytModal"
                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -104,8 +83,8 @@
                                                 </svg>
                                                 Edit
                                             </button>
-                                            <button type="button" data-modal-toggle="deleteModal"
-                                                wire:click="setdeleteid({{ $user->id }})"
+                                            <button type="button" data-modal-toggle="DeleteCategorytModal"
+                                                wire:click="setdeleteid({{ $category->id }})"
                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -122,7 +101,7 @@
                                     <tr>
                                         <td colspan="4">
                                             <div class="flex justify-center items-center">
-                                                <span class=" py-8 text-gray-400 text-xl"> No users found...</span>
+                                                <span class=" py-8 text-gray-400 text-xl"> No categories found...</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -130,14 +109,14 @@
 
                             </tbody>
                         </table>
-                        {{ $users->links() }}
+                        {{ $categories->links() }}
                     </div>
                 </div>
             </div>
         </div>
 
-        @include('livewire.users.modals.new-user-model')
-        @include('livewire.users.modals.edit-user-model')
-        @include('livewire.users.modals.delete-user-modal')
-        @include('livewire.users.modals.user-profile')
+        @include('livewire.admin.categories.modals.new-category-model')
+        @include('livewire.admin.categories.modals.edit-category-model')
+        @include('livewire.admin.categories.modals.delete-category-modal')
+ 
     </div>
