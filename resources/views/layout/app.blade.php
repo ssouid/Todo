@@ -14,10 +14,16 @@
 
 
 
-    <div class="p-4 sm:ml-64">
-        @includeWhen(auth()->user()->user_type == 'admin', 'components.side-bar')
+    @if (auth()->user()->user_type == 'user')
+        <div class="p-4  mx-12">
+    @endif
+    @if (auth()->user()->user_type == 'admin')
+        <div class="p-4  sm:ml-64">
+    @endif
 
-        {{ $slot }}
+    @includeWhen(auth()->user()->user_type == 'admin', 'components.side-bar')
+
+    {{ $slot }}
 
     </div>
 

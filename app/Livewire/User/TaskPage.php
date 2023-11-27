@@ -22,10 +22,15 @@ class TaskPage extends Component
 
     public $title, $description, $status, $priority, $due_date, $task_id, $created_by;
 
+
     public $search = '';
+    public $userslist = '';
+    public $categorieslist = '';
     public $selectdtask = [];
     public   $cates = [];
     public $selectedUsers = [];
+    public $userId;
+
 
     protected $rules = [
         'title'       => 'required|string',
@@ -37,20 +42,35 @@ class TaskPage extends Component
 
     public function render()
     {
-         sleep(0.9);
+        sleep(0.9);
 
         return view(
             'livewire.user.tasks.task-page',
             [
-                'tasks' =>  Task::where('created_by','=',)->with(['categories', 'users', 'createdby'])
+                'tasks' =>  Task::whereHas('users', function ($query) {
+                    return $query->where('user_id', '=', $this->userId);
+                })
+                    ->orwhere('created_by', '=', userId())
                     ->search('title', $this->search)
-                    ->paginate(7),
+                    ->paginate(7)
 
 
-                'userslist' => User::all(),
-                'categorieslist' => Category::all(),
             ]
         );
+    }
+    public function mount()
+    {
+        $this->userslist = User::all();
+        $this->categorieslist = Category::all();
+        $this->userId =  userId();
+    }
+    public function FilterTask($arg)
+    {
+        if ($arg == 'mytask') {
+            $this->userId =  null;
+        } elseif ($arg == 'alltask') {
+            $this->userId = userId();
+        }
     }
 
     public function save()
@@ -84,7 +104,7 @@ class TaskPage extends Component
         $this->priority      = '';
         $this->due_date      = '';
         $this->task_id       = '';
-        $this->cates   = '';
+        $this->cates         = '';
         $this->created_by    = '';
         $this->selectedUsers = '';
     }
@@ -109,7 +129,7 @@ class TaskPage extends Component
         flash('The task deleted successfully', 'success');
     }
 
-    public function showTask($taskID,$btn)
+    public function showTask($taskID, $btn)
     {
 
         $task = Task::findOrFail($taskID);
@@ -121,6 +141,5 @@ class TaskPage extends Component
         $this->due_date    =  $task->due_date;
         $this->selectdtask =  $task->users;
         $this->cates =  $task->categories;
-
     }
 }

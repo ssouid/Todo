@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\User;
+namespace App\Livewire\Admin;
 
 use Livewire\WithPagination;
 use App\Models\Category;
@@ -16,7 +16,7 @@ use Livewire\Component;
 
 
 #[Layout('layout.app')]
-class TaskPage extends Component
+class AdminTaskPage extends Component
 {
     use WithPagination;
 
@@ -40,10 +40,11 @@ class TaskPage extends Component
          sleep(0.9);
 
         return view(
-            'livewire.user.tasks.task-page',
+            'livewire.admin.tasks.task-page',
             [
-                'tasks' =>  Task::where('created_by','=',)->with(['categories', 'users', 'createdby'])
+                'tasks' =>  Task::with(['categories', 'users', 'createdby'])
                     ->search('title', $this->search)
+                    ->withCount('users')
                     ->paginate(7),
 
 
